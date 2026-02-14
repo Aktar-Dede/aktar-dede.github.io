@@ -10,7 +10,7 @@
         "barcode": "8690303031430",
         "name": "ADAÇAYI DEMET",
         "brand": "AKTAR DEDE",
-        "category": "CAY",
+        "category": "ÇAY",
         "price": 0
     },
     {
@@ -25,6 +25,13 @@
         "name": "AHUDUDUD YAPRAĞI 25 GR",
         "brand": "AKTAR DEDE",
         "category": "AKTAR DEDE OT GRUBU",
+        "price": 0
+    },
+    {
+        "barcode": "8690303031867",
+        "name": "ALIÇ SİRKESİ 500ML",
+        "brand": "AKTAR DEDE",
+        "category": "SİRKE",
         "price": 0
     },
     {
@@ -63,17 +70,24 @@
         "price": 0
     },
     {
-        "barcode": "8690303031539",
-        "name": "ANDIZ OTU 30 GE",
+        "barcode": "8690303031805",
+        "name": "ANDIZ KÖKÜ 60 GR",
         "brand": "AKTAR DEDE",
-        "category": "GENEL",
+        "category": "AKTAR DEDE OT GRUBU",
+        "price": 0
+    },
+    {
+        "barcode": "8690303031539",
+        "name": "ANDIZ OTU 30 GR",
+        "brand": "AKTAR DEDE",
+        "category": "AKTAR DEDE OT GRUBU",
         "price": 0
     },
     {
         "barcode": "123642",
         "name": "ARDIÇ KATRANI 250ML",
         "brand": "AKTAR DEDE",
-        "category": "GENEL",
+        "category": "250 ML YAĞ",
         "price": 0
     },
     {
@@ -108,7 +122,7 @@
         "barcode": "8690303031522",
         "name": "ASPİR TOHUMU YAĞI 250 ML",
         "brand": "AKTAR DEDE",
-        "category": "250 ML YAG",
+        "category": "250 ML YAĞ",
         "price": 0
     },
     {
@@ -148,9 +162,9 @@
     },
     {
         "barcode": "8690303031348",
-        "name": "BAMYA TOHUMU YAĞI 50 ML AKTAR DEDE",
-        "brand": "ANADOLU FLORA",
-        "category": "50 ML YAG",
+        "name": "BAMYA TOHUMU YAĞI 50 ML",
+        "brand": "AKTAR DEDE",
+        "category": "50 ML YAĞ",
         "price": 0
     },
     {
@@ -164,21 +178,21 @@
         "barcode": "8690303031775",
         "name": "BASRA LİMON KURUSU",
         "brand": "AKTAR DEDE",
-        "category": "GENEL",
+        "category": "AKTAR DEDE OT GRUBU",
         "price": 0
     },
     {
         "barcode": "8690303031232",
         "name": "BEBEK İRMİĞİ 500GR",
         "brand": "AKTAR DEDE",
-        "category": "GENEL",
+        "category": "GIDA",
         "price": 0
     },
     {
         "barcode": "8690303031713",
         "name": "BEBEK TARHANASI 500GR",
         "brand": "AKTAR DEDE",
-        "category": "GENEL",
+        "category": "GIDA",
         "price": 0
     },
     {
@@ -186,6 +200,13 @@
         "name": "BEYAZ ÇAY 40 GR",
         "brand": "AKTAR DEDE",
         "category": "AKTAR DEDE OT GRUBU",
+        "price": 0
+    },
+    {
+        "barcode": "8690303031881",
+        "name": "BITTIM SABUNU ANADOLU FLORA",
+        "brand": "ANADOLU FLORA",
+        "category": "ANADOLU FLORA SABUN",
         "price": 0
     },
     {
@@ -206,7 +227,7 @@
         "barcode": "8690303031621",
         "name": "BİBERİYE YAĞI 20 ML",
         "brand": "AKTAR DEDE",
-        "category": "20 ML YAG",
+        "category": "20 ML YAĞ",
         "price": 0
     },
     {
@@ -234,14 +255,14 @@
         "barcode": "123599",
         "name": "CEVİZ İÇİ ZARI 20 GR",
         "brand": "AKTAR DEDE",
-        "category": "GENEL",
+        "category": "AKTAR DEDE OT GRUBU",
         "price": 0
     },
     {
         "barcode": "8690303031546",
         "name": "CEVİZ YAĞI 20ML",
         "brand": "AKTAR DEDE",
-        "category": "20 ML YAG",
+        "category": "20 ML YAĞ",
         "price": 0
     },
     {
@@ -270,6 +291,20 @@
         "name": "ÇAKŞIR OTU 40 GR",
         "brand": "AKTAR DEDE",
         "category": "AKTAR DEDE OT GRUBU",
+        "price": 0
+    },
+    {
+        "barcode": "8690303031898",
+        "name": "ÇAKŞIR SUYU 1KG",
+        "brand": "AKTAR DEDE",
+        "category": "SU",
+        "price": 0
+    },
+    {
+        "barcode": "8690303031911",
+        "name": "ÇAM ÇIRA SUYU 1KG",
+        "brand": "AKTAR DEDE",
+        "category": "SU",
         "price": 0
     },
     {
@@ -318,28 +353,35 @@
         "barcode": "8690303031218",
         "name": "ÇOCUK ÇAYI 75 GR",
         "brand": "AKTAR DEDE",
-        "category": "GENEL",
+        "category": "ÇAY",
+        "price": 0
+    },
+    {
+        "barcode": "123676",
+        "name": "ÇÖREKOTLU SABUN ANADOLU FLORA",
+        "brand": "ANADOLU FLORA",
+        "category": "ANADOLU FLORA SABUN",
         "price": 0
     },
     {
         "barcode": "8690303031270",
         "name": "ÇÖREKOTU YAĞI 250 ML",
         "brand": "AKTAR DEDE",
-        "category": "250 ML YAG",
+        "category": "250 ML YAĞ",
         "price": 0
     },
     {
         "barcode": "8690303031393",
         "name": "ÇÖREKOTU YAĞI 50 ML",
         "brand": "AKTAR DEDE",
-        "category": "50 ML YAG",
+        "category": "50 ML YAĞ",
         "price": 0
     },
     {
         "barcode": "8690303031706",
         "name": "ÇÖVEN KÖK 70 GR",
         "brand": "AKTAR DEDE",
-        "category": "GENEL",
+        "category": "AKTAR DEDE OT GRUBU",
         "price": 0
     },
     {
@@ -360,7 +402,7 @@
         "barcode": "8695653801184",
         "name": "DENGE 100 GR",
         "brand": "AKTAR DEDE",
-        "category": "CAY",
+        "category": "ÇAY",
         "price": 0
     },
     {
@@ -368,6 +410,20 @@
         "name": "DEREOTU KURUSU 60 GR",
         "brand": "AKTAR DEDE",
         "category": "AKTAR DEDE OT GRUBU",
+        "price": 0
+    },
+    {
+        "barcode": "8690303031744",
+        "name": "DKL BİTKİ SUYU 100ML ANADOLU FLORA",
+        "brand": "ANADOLU FLORA",
+        "category": "SU",
+        "price": 0
+    },
+    {
+        "barcode": "8690303031751",
+        "name": "DKL PLUS BİTKİ SUYU 100ML ANADOLU FLORA",
+        "brand": "ANADOLU FLORA",
+        "category": "SU",
         "price": 0
     },
     {
@@ -416,14 +472,14 @@
         "barcode": "8690303031485",
         "name": "ELMA SİRKESİ 500 GR",
         "brand": "AKTAR DEDE",
-        "category": "SIRKE",
+        "category": "SİRKE",
         "price": 0
     },
     {
         "barcode": "8690303031737",
         "name": "ENGİNAR SUYU 1 LT",
         "brand": "AKTAR DEDE",
-        "category": "GENEL",
+        "category": "SU",
         "price": 0
     },
     {
@@ -444,14 +500,14 @@
         "barcode": "8690303031553",
         "name": "FINDIK YAĞI 20ML",
         "brand": "AKTAR DEDE",
-        "category": "20 ML YAG",
+        "category": "20 ML YAĞ",
         "price": 0
     },
     {
         "barcode": "8690303030433",
         "name": "FOR EDEMA 20Lİ ÇAY",
         "brand": "AKTAR DEDE",
-        "category": "CAY",
+        "category": "ÇAY",
         "price": 0
     },
     {
@@ -465,7 +521,7 @@
         "barcode": "8690303030761",
         "name": "GİLABURU SUYU 5LT",
         "brand": "AKTAR DEDE",
-        "category": "GENEL",
+        "category": "SU",
         "price": 0
     },
     {
@@ -480,6 +536,13 @@
         "name": "GİNKO BLOBA 40 GR",
         "brand": "AKTAR DEDE",
         "category": "AKTAR DEDE OT GRUBU",
+        "price": 0
+    },
+    {
+        "barcode": "8690303031836",
+        "name": "GLİSERİN 50ML",
+        "brand": "AKTAR DEDE",
+        "category": "50 ML YAĞ",
         "price": 0
     },
     {
@@ -500,7 +563,7 @@
         "barcode": "8690303030891",
         "name": "HAŞHAŞ EZMESİ 100GR",
         "brand": "AKTAR DEDE",
-        "category": "GENEL",
+        "category": "GIDA",
         "price": 0
     },
     {
@@ -521,7 +584,7 @@
         "barcode": "8690303031768",
         "name": "HAYIT SUYU 1LT",
         "brand": "AKTAR DEDE",
-        "category": "GENEL",
+        "category": "SU",
         "price": 0
     },
     {
@@ -535,14 +598,14 @@
         "barcode": "8690303031447",
         "name": "HİMALAYA TUZU TANE 1 KG",
         "brand": "AKTAR DEDE",
-        "category": "GENEL",
+        "category": "TUZ",
         "price": 0
     },
     {
         "barcode": "8690303031560",
         "name": "HİMALAYA TUZU TOZ 1 KG",
         "brand": "AKTAR DEDE",
-        "category": "GENEL",
+        "category": "TUZ",
         "price": 0
     },
     {
@@ -553,10 +616,17 @@
         "price": 0
     },
     {
+        "barcode": "8690303031829",
+        "name": "HİNT YAĞI 50ML",
+        "brand": "AKTAR DEDE",
+        "category": "50 ML YAĞ",
+        "price": 0
+    },
+    {
         "barcode": "123616",
         "name": "HÜMA SABUN",
         "brand": "ANADOLU FLORA",
-        "category": "SABUN",
+        "category": "ANADOLU FLORA SABUN",
         "price": 0
     },
     {
@@ -619,21 +689,28 @@
         "barcode": "8690303030358",
         "name": "İŞTAH ARTTIRICI ÇAY 20 Lİ",
         "brand": "AKTAR DEDE",
-        "category": "CAY",
+        "category": "ÇAY",
+        "price": 0
+    },
+    {
+        "barcode": "8690303031461",
+        "name": "KABAK ÇEKİRDEĞİ YAĞI 250 ML",
+        "brand": "AKTAR DEDE",
+        "category": "250 ML YAĞ",
         "price": 0
     },
     {
         "barcode": "8690303031478",
         "name": "KABAK ÇEKİRDEĞİ YAĞI 50 ML",
         "brand": "AKTAR DEDE",
-        "category": "50 ML YAG",
+        "category": "50 ML YAĞ",
         "price": 0
     },
     {
         "barcode": "8690303030747",
         "name": "KARABAŞ OTLU KARIŞIK ÇAY",
         "brand": "AKTAR DEDE",
-        "category": "GENEL",
+        "category": "ÇAY",
         "price": 0
     },
     {
@@ -661,42 +738,42 @@
         "barcode": "8690303030341",
         "name": "KARIŞIK BİTKİ ÇAYI 200GR",
         "brand": "AKTAR DEDE",
-        "category": "CAY",
+        "category": "ÇAY",
         "price": 0
     },
     {
         "barcode": "123504",
         "name": "KARIŞIM MACUN",
         "brand": "AKTAR DEDE",
-        "category": "GENEL",
+        "category": "MACUN",
         "price": 0
     },
     {
         "barcode": "8690303030860",
-        "name": "KATI HİNDİSTAN CEVİZİ YAĞI 150 ML ANADOLU FLORA",
-        "brand": "ANADOLU FLORA",
-        "category": "YAG",
+        "name": "KATI HİNDİSTAN CEVİZİ YAĞI 150 ML",
+        "brand": "AKTAR DEDE",
+        "category": "YAĞ",
         "price": 0
     },
     {
         "barcode": "8690303030877",
-        "name": "KATI HİNDİSTAN CEVİZİ YAĞI 50 ML ANADOLU FLORA",
-        "brand": "ANADOLU FLORA",
-        "category": "YAG",
+        "name": "KATI HİNDİSTAN CEVİZİ YAĞI 50 ML",
+        "brand": "AKTAR DEDE",
+        "category": "YAĞ",
         "price": 0
     },
     {
         "barcode": "8690303031263",
-        "name": "KATI KAKAO YAĞI 150 ML ANADOLU FLORA",
-        "brand": "ANADOLU FLORA",
-        "category": "YAG",
+        "name": "KATI KAKAO YAĞI 150 ML",
+        "brand": "AKTAR DEDE",
+        "category": "YAĞ",
         "price": 0
     },
     {
         "barcode": "8690303031256",
-        "name": "KATI KAKAO YAĞI 50 ML ANADOLU FLORA",
-        "brand": "ANADOLU FLORA",
-        "category": "YAG",
+        "name": "KATI KAKAO YAĞI 50 ML",
+        "brand": "AKTAR DEDE",
+        "category": "YAĞ",
         "price": 0
     },
     {
@@ -710,7 +787,7 @@
         "barcode": "123554",
         "name": "KAYA TUZU TANE 500 GR",
         "brand": "AKTAR DEDE",
-        "category": "GENEL",
+        "category": "TUZ",
         "price": 0
     },
     {
@@ -724,7 +801,7 @@
         "barcode": "123553",
         "name": "KAYA TUZU TOZ 500 GR",
         "brand": "AKTAR DEDE",
-        "category": "GENEL",
+        "category": "TUZ",
         "price": 0
     },
     {
@@ -759,12 +836,12 @@
         "barcode": "8690303031799",
         "name": "KEKİK SUYU 1 LT",
         "brand": "AKTAR DEDE",
-        "category": "GENEL",
+        "category": "SU",
         "price": 0
     },
     {
         "barcode": "8690303031690",
-        "name": "KEKİK SUYU 250ML",
+        "name": "KEKİK SUYU 250 ML",
         "brand": "AKTAR DEDE",
         "category": "SU",
         "price": 0
@@ -773,21 +850,21 @@
         "barcode": "8690303031843",
         "name": "KEKİK YAĞI 20ML",
         "brand": "AKTAR DEDE",
-        "category": "20 ML YAG",
+        "category": "20 ML YAĞ",
         "price": 0
     },
     {
         "barcode": "8690303031287",
         "name": "KETEN TOHUMU YAĞI 250 ML",
         "brand": "AKTAR DEDE",
-        "category": "250 ML YAG",
+        "category": "250 ML YAĞ",
         "price": 0
     },
     {
         "barcode": "8690303031362",
         "name": "KETEN TOHUMU YAĞI 50 ML",
         "brand": "AKTAR DEDE",
-        "category": "50 ML YAG",
+        "category": "50 ML YAĞ",
         "price": 0
     },
     {
@@ -799,7 +876,7 @@
     },
     {
         "barcode": "8690303031676",
-        "name": "KIRKKİLİT SUYU 250ML",
+        "name": "KIRKKİLİT SUYU 250 ML",
         "brand": "AKTAR DEDE",
         "category": "SU",
         "price": 0
@@ -822,7 +899,7 @@
         "barcode": "2900315",
         "name": "KİRAZ SAPI AÇIK",
         "brand": "AKTAR DEDE",
-        "category": "ACIK OT",
+        "category": "AÇIK OT",
         "price": 0
     },
     {
@@ -869,16 +946,16 @@
     },
     {
         "barcode": "8690303031324",
-        "name": "LAKVA YAĞI 20 ML ANADOLU FLORA",
-        "brand": "ANADOLU FLORA",
-        "category": "GENEL",
+        "name": "LAKVA YAĞI 20 ML",
+        "brand": "AKTAR DEDE",
+        "category": "20 ML YAĞ",
         "price": 0
     },
     {
         "barcode": "123615",
         "name": "LAL SABUN",
         "brand": "ANADOLU FLORA",
-        "category": "SABUN",
+        "category": "ANADOLU FLORA SABUN",
         "price": 0
     },
     {
@@ -906,14 +983,21 @@
         "barcode": "8690303031614",
         "name": "LAVANTA YAĞI 20ML",
         "brand": "AKTAR DEDE",
-        "category": "20 ML YAG",
+        "category": "20 ML YAĞ",
+        "price": 0
+    },
+    {
+        "barcode": "123677",
+        "name": "LİFLİ SABUN ÇEŞİTLERİ ANADOLU FLORA",
+        "brand": "ANADOLU FLORA",
+        "category": "ANADOLU FLORA SABUN",
         "price": 0
     },
     {
         "barcode": "8690303030242",
         "name": "MAŞ FASULYESİ 250 GR",
         "brand": "AKTAR DEDE",
-        "category": "PK BITKI",
+        "category": "AKTAR DEDE OT GRUBU",
         "price": 0
     },
     {
@@ -997,12 +1081,19 @@
         "barcode": "8690303030945",
         "name": "MİSVAK TOZU 100 GR ANADOLU FLORA",
         "brand": "ANADOLU FLORA",
-        "category": "GENEL",
+        "category": "KOZMETİK",
         "price": 0
     },
     {
         "barcode": "8690303030396",
         "name": "MOR REYHAN 30 GR",
+        "brand": "AKTAR DEDE",
+        "category": "AKTAR DEDE OT GRUBU",
+        "price": 0
+    },
+    {
+        "barcode": "8690303031874",
+        "name": "MORİNGA YAPRAK 50GR",
         "brand": "AKTAR DEDE",
         "category": "AKTAR DEDE OT GRUBU",
         "price": 0
@@ -1018,7 +1109,7 @@
         "barcode": "8690303031850",
         "name": "NANE YAĞI 20 ML",
         "brand": "AKTAR DEDE",
-        "category": "20 ML YAG",
+        "category": "20 ML YAĞ",
         "price": 0
     },
     {
@@ -1044,9 +1135,9 @@
     },
     {
         "barcode": "8690303031652",
-        "name": "OZONLANMIŞ ZEYTİN YAĞI 50ML",
+        "name": "OZONLANMIŞ ZEYTİN YAĞI 50 ML",
         "brand": "AKTAR DEDE",
-        "category": "50 ML YAG",
+        "category": "50 ML YAĞ",
         "price": 0
     },
     {
@@ -1064,10 +1155,17 @@
         "price": 0
     },
     {
+        "barcode": "8690303031812",
+        "name": "PAPATYA SUYU 1 LT",
+        "brand": "AKTAR DEDE",
+        "category": "SU",
+        "price": 0
+    },
+    {
         "barcode": "8690303031782",
         "name": "PAPATYA SUYU 250 ML",
         "brand": "AKTAR DEDE",
-        "category": "GENEL",
+        "category": "SU",
         "price": 0
     },
     {
@@ -1081,7 +1179,7 @@
         "barcode": "123617",
         "name": "PERİ SABUN",
         "brand": "ANADOLU FLORA",
-        "category": "SABUN",
+        "category": "ANADOLU FLORA SABUN",
         "price": 0
     },
     {
@@ -1095,14 +1193,14 @@
         "barcode": "8690303031317",
         "name": "PORTAKAL UNU  100 GR",
         "brand": "AKTAR DEDE",
-        "category": "GENEL",
+        "category": "UN",
         "price": 0
     },
     {
         "barcode": "000036",
         "name": "RAMAZAN ŞERBETİ",
         "brand": "AKTAR DEDE",
-        "category": "CAY",
+        "category": "ÇAY",
         "price": 0
     },
     {
@@ -1137,26 +1235,33 @@
         "barcode": "8690303031584",
         "name": "SARI KANTARON YAĞI 20 ML",
         "brand": "AKTAR DEDE",
-        "category": "20 ML YAG",
+        "category": "20 ML YAĞ",
         "price": 0
     },
     {
         "barcode": "8690303031577",
         "name": "SARI KANTARON YAĞI 250 ML",
         "brand": "AKTAR DEDE",
-        "category": "250 ML YAG",
+        "category": "250 ML YAĞ",
         "price": 0
     },
     {
         "barcode": "8690303031591",
         "name": "SARI KANTARON YAĞI 50 ML",
         "brand": "AKTAR DEDE",
-        "category": "50 ML YAG",
+        "category": "50 ML YAĞ",
         "price": 0
     },
     {
         "barcode": "8690303031010",
         "name": "SEDİR YAPRAĞI 50 GR",
+        "brand": "AKTAR DEDE",
+        "category": "AKTAR DEDE OT GRUBU",
+        "price": 0
+    },
+    {
+        "barcode": "8690303031607",
+        "name": "SEYLAN TARÇIN 50GR",
         "brand": "AKTAR DEDE",
         "category": "AKTAR DEDE OT GRUBU",
         "price": 0
@@ -1172,7 +1277,7 @@
         "barcode": "8690303031720",
         "name": "SİDR YAPRAĞI 25 GR",
         "brand": "AKTAR DEDE",
-        "category": "GENEL",
+        "category": "AKTAR DEDE OT GRUBU",
         "price": 0
     },
     {
@@ -1200,14 +1305,14 @@
         "barcode": "8690303031454",
         "name": "SUSAM YAĞI 250 ML",
         "brand": "AKTAR DEDE",
-        "category": "250 ML YAG",
+        "category": "250 ML YAĞ",
         "price": 0
     },
     {
         "barcode": "8690303031331",
         "name": "SUSAM YAĞI 50 ML",
         "brand": "AKTAR DEDE",
-        "category": "50 ML YAG",
+        "category": "50 ML YAĞ",
         "price": 0
     },
     {
@@ -1263,7 +1368,7 @@
         "barcode": "123614",
         "name": "TUĞÇE SABUN",
         "brand": "ANADOLU FLORA",
-        "category": "SABUN",
+        "category": "ANADOLU FLORA SABUN",
         "price": 0
     },
     {
@@ -1277,7 +1382,7 @@
         "barcode": "8690303031423",
         "name": "ÜZERLİK DEMET",
         "brand": "AKTAR DEDE",
-        "category": "GENEL",
+        "category": "ÇAY",
         "price": 0
     },
     {
@@ -1298,14 +1403,14 @@
         "barcode": "8690303031492",
         "name": "ÜZÜM SİRKESİ 500 GR",
         "brand": "AKTAR DEDE",
-        "category": "SIRKE",
+        "category": "SİRKE",
         "price": 0
     },
     {
         "barcode": "123465",
         "name": "YAKI OTLU KARIŞIK ÇAY 30 LU",
         "brand": "AKTAR DEDE",
-        "category": "GENEL",
+        "category": "ÇAY",
         "price": 0
     },
     {
@@ -1359,16 +1464,16 @@
     },
     {
         "barcode": "8690303030884",
-        "name": "ZEYTİN YAĞI 250 ML ANADOLU FLORA",
-        "brand": "ANADOLU FLORA",
-        "category": "GENEL",
+        "name": "ZEYTİN YAĞI 250 ML",
+        "brand": "AKTAR DEDE",
+        "category": "250 ML YAĞ",
         "price": 0
     },
     {
         "barcode": "8690303031645",
         "name": "ZEYTİN YAĞI 50 ML",
         "brand": "AKTAR DEDE",
-        "category": "50 ML YAG",
+        "category": "50 ML YAĞ",
         "price": 0
     },
     {

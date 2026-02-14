@@ -118,6 +118,10 @@
                         <label class="block text-[10px] font-black text-slate-400 uppercase mb-2 ml-1">Ürün Adı ve Gramajı</label>
                         <input type="text" id="m_name" required class="w-full p-4 bg-slate-50 border border-slate-200 rounded-2xl outline-none focus:ring-4 focus:ring-emerald-500/10 focus:border-emerald-600 transition-all font-bold">
                     </div>
+                    <div class="col-span-2">
+                        <label class="block text-[10px] font-black text-slate-400 uppercase mb-2 ml-1">Açıklama / Not (Opsiyonel)</label>
+                        <input type="text" id="m_notes" placeholder="Stok durumu, özel not vb." class="w-full p-4 bg-slate-50 border border-slate-200 rounded-2xl outline-none focus:ring-4 focus:ring-emerald-500/10 focus:border-emerald-600 transition-all">
+                    </div>
                     <div>
                         <label class="block text-[10px] font-black text-slate-400 uppercase mb-2 ml-1">Marka</label>
                         <select id="m_brand" class="w-full p-4 bg-slate-50 border border-slate-200 rounded-2xl outline-none cursor-pointer font-bold">
@@ -148,8 +152,7 @@
 
     <script>
         // Ürün Listesi
-        let products = [
-        ];
+        let products = [];
 
         // LocalStorage'dan verileri yükle
         function loadFromLocalStorage() {
@@ -157,6 +160,11 @@
             if (saved) {
                 try {
                     products = JSON.parse(saved);
+                    // Eski verilerde notes alanı yoksa ekle
+                    products = products.map(p => ({
+                        ...p,
+                        notes: p.notes || ""
+                    }));
                     console.log('Veriler localStorage\'dan yüklendi:', products.length, 'ürün');
                 } catch (e) {
                     console.error('localStorage verileri yüklenirken hata:', e);
@@ -178,8 +186,7 @@
         function resetData() {
             if (confirm('Tüm veriler silinecek ve varsayılan verilere dönülecek. Emin misiniz?')) {
                 localStorage.removeItem('floraDedeProducts');
-                products = [
-                ];
+                products = [];
                 saveToLocalStorage();
                 renderProducts();
                 alert('Veriler varsayılana sıfırlandı!');
@@ -306,28 +313,36 @@
         
         function createProductRow(item) {
             const row = document.createElement('div');
-            row.className = 'px-8 py-5 hover:bg-slate-50/50 transition-colors group flex items-center gap-6 border-b border-slate-100 last:border-b-0';
+            row.className = 'px-8 py-5 hover:bg-slate-50/50 transition-colors group border-b border-slate-100 last:border-b-0';
             row.id = `row-${item.barcode}`;
             row.innerHTML = `
-                <div class="w-32 flex-shrink-0">
-                    <div class="text-xs font-mono text-slate-400 font-bold">${item.barcode}</div>
-                </div>
-                <div class="flex-1 min-w-0">
-                    <div class="font-bold text-slate-800 text-lg">${item.name}</div>
-                </div>
-                <div class="flex items-center gap-4 flex-shrink-0">
-                    <div class="flex items-center gap-2">
-                        <input type="number" step="0.01" 
-                            value="${item.price.toFixed(2)}" 
-                            onchange="updatePrice('${item.barcode}', this.value)"
-                            onblur="formatPrice(this, '${item.barcode}')"
-                            class="price-input w-32 p-3 font-black text-emerald-800 bg-emerald-50/50 rounded-xl border border-emerald-100 outline-none text-xl transition-all focus:bg-white focus:ring-2 focus:ring-emerald-500/20"
-                        >
-                        <span class="text-sm font-black text-slate-300">TL</span>
+                <div class="flex items-start gap-6">
+                    <div class="w-32 flex-shrink-0 pt-2">
+                        <div class="text-xs font-mono text-slate-400 font-bold">${item.barcode}</div>
                     </div>
-                    <button onclick="deleteProduct('${item.barcode}')" class="text-slate-200 hover:text-red-500 p-2 rounded-xl hover:bg-red-50 transition-all opacity-0 group-hover:opacity-100">
-                        <i data-lucide="trash-2" class="w-5 h-5"></i>
-                    </button>
+                    <div class="flex-1 min-w-0">
+                        <div class="font-bold text-slate-800 text-lg mb-2">${item.name}</div>
+                        <input type="text" 
+                            value="${item.notes || ''}" 
+                            placeholder="Açıklama ekle (stok durumu, not vb.)"
+                            onchange="updateNotes('${item.barcode}', this.value)"
+                            class="w-full px-3 py-2 text-sm bg-slate-50 border border-slate-200 rounded-lg outline-none focus:ring-2 focus:ring-emerald-500/20 focus:border-emerald-600 transition-all text-slate-600"
+                        >
+                    </div>
+                    <div class="flex items-center gap-4 flex-shrink-0 pt-2">
+                        <div class="flex items-center gap-2">
+                            <input type="number" step="0.01" 
+                                value="${item.price.toFixed(2)}" 
+                                onchange="updatePrice('${item.barcode}', this.value)"
+                                onblur="formatPrice(this, '${item.barcode}')"
+                                class="price-input w-32 p-3 font-black text-emerald-800 bg-emerald-50/50 rounded-xl border border-emerald-100 outline-none text-xl transition-all focus:bg-white focus:ring-2 focus:ring-emerald-500/20"
+                            >
+                            <span class="text-sm font-black text-slate-300">TL</span>
+                        </div>
+                        <button onclick="deleteProduct('${item.barcode}')" class="text-slate-200 hover:text-red-500 p-2 rounded-xl hover:bg-red-50 transition-all opacity-0 group-hover:opacity-100">
+                            <i data-lucide="trash-2" class="w-5 h-5"></i>
+                        </button>
+                    </div>
                 </div>
             `;
             return row;
@@ -341,6 +356,14 @@
                 const row = document.getElementById(`row-${barcode}`);
                 row.classList.add('update-flash');
                 setTimeout(() => row.classList.remove('update-flash'), 1000);
+            }
+        }
+
+        function updateNotes(barcode, notes) {
+            const index = products.findIndex(p => p.barcode === barcode);
+            if (index !== -1) {
+                products[index].notes = notes;
+                saveToLocalStorage(); // LocalStorage'a kaydet
             }
         }
 
@@ -454,11 +477,8 @@
                 
                 ws_data.push([`${brand} TOPTAN FİYAT LİSTESİ`]);
                 ws_data.push([`Tarih: ${new Date().toLocaleDateString('tr-TR')}`]);
-                if (hideZeroPrice) {
-                    ws_data.push([`Not: Fiyatı 0,00 TL olan ürünler dahil edilmemiştir.`]);
-                }
                 ws_data.push([]);
-                ws_data.push(['ÜRÜN ADI', 'BARKOD', 'FİYAT (TL)']);
+                ws_data.push(['ÜRÜN ADI', 'BARKOD', 'FİYAT (TL)', 'AÇIKLAMA']);
                 
                 const categories = [...new Set(brandProducts.map(p => p.category))];
                 
@@ -474,19 +494,19 @@
                             if (subItems.length > 0) {
                                 ws_data.push([`  ${sub}`]);
                                 subItems.forEach(item => {
-                                    ws_data.push([`    ${item.name}`, item.barcode, item.price.toFixed(2)]);
+                                    ws_data.push([`    ${item.name}`, item.barcode, item.price.toFixed(2), item.notes || '']);
                                 });
                             }
                         });
                     } else {
                         catItems.forEach(item => {
-                            ws_data.push([`  ${item.name}`, item.barcode, item.price.toFixed(2)]);
+                            ws_data.push([`  ${item.name}`, item.barcode, item.price.toFixed(2), item.notes || '']);
                         });
                     }
                 });
                 
                 const ws = XLSX.utils.aoa_to_sheet(ws_data);
-                ws['!cols'] = [{ wch: 50 }, { wch: 20 }, { wch: 15 }];
+                ws['!cols'] = [{ wch: 50 }, { wch: 20 }, { wch: 15 }, { wch: 40 }];
                 
                 if (ws['A1']) {
                     ws['A1'].s = {
@@ -503,7 +523,7 @@
                     };
                 }
                 
-                ['A4', 'B4', 'C4'].forEach(cell => {
+                ['A4', 'B4', 'C4', 'D4'].forEach(cell => {
                     if (ws[cell]) {
                         ws[cell].s = {
                             font: { bold: true, sz: 11 },
@@ -542,21 +562,10 @@
                     margin: [0, 0, 0, 5]
                 });
                 
-                if (hideZeroPrice) {
-                    allContent.push({
-                        text: `Not: Fiyatı 0,00 TL olan ürünler dahil edilmemiştir.`,
-                        style: 'note',
-                        margin: [0, 0, 0, 20],
-                        italics: true,
-                        color: '#666666',
-                        fontSize: 9
-                    });
-                } else {
-                    allContent.push({
-                        text: '',
-                        margin: [0, 0, 0, 15]
-                    });
-                }
+                allContent.push({
+                    text: '',
+                    margin: [0, 0, 0, 15]
+                });
                 
                 let brandProducts = products.filter(p => p.brand === brand);
                 
@@ -571,7 +580,8 @@
                 tableBody.push([
                     { text: 'Ürün Adı', style: 'tableHeader', fillColor: '#064e3b', color: 'white' },
                     { text: 'Barkod', style: 'tableHeader', fillColor: '#064e3b', color: 'white', alignment: 'center' },
-                    { text: 'Birim Fiyat', style: 'tableHeader', fillColor: '#064e3b', color: 'white', alignment: 'right' }
+                    { text: 'Birim Fiyat', style: 'tableHeader', fillColor: '#064e3b', color: 'white', alignment: 'right' },
+                    { text: 'Açıklama', style: 'tableHeader', fillColor: '#064e3b', color: 'white' }
                 ]);
                 
                 categories.forEach(cat => {
@@ -579,7 +589,8 @@
                     if (catItems.length === 0) return;
                     
                     tableBody.push([
-                        { text: cat, colSpan: 3, style: 'categoryHeader', fillColor: '#e5e7eb' },
+                        { text: cat, colSpan: 4, style: 'categoryHeader', fillColor: '#e5e7eb' },
+                        {},
                         {},
                         {}
                     ]);
@@ -589,7 +600,8 @@
                             const subItems = catItems.filter(p => getOilSubGroup(p.name) === sub);
                             if (subItems.length > 0) {
                                 tableBody.push([
-                                    { text: `   ${sub}`, colSpan: 3, style: 'subGroupHeader', italics: true, color: '#6b7280' },
+                                    { text: `   ${sub}`, colSpan: 4, style: 'subGroupHeader', italics: true, color: '#6b7280' },
+                                    {},
                                     {},
                                     {}
                                 ]);
@@ -598,7 +610,8 @@
                                     tableBody.push([
                                         { text: `      ${item.name}`, style: 'tableCell' },
                                         { text: item.barcode, style: 'tableCell', alignment: 'center' },
-                                        { text: `${item.price.toFixed(2)} TL`, style: 'tableCell', alignment: 'right', bold: true }
+                                        { text: `${item.price.toFixed(2)} TL`, style: 'tableCell', alignment: 'right', bold: true },
+                                        { text: item.notes || '', style: 'tableCell', fontSize: 8, color: '#666666' }
                                     ]);
                                 });
                             }
@@ -608,7 +621,8 @@
                             tableBody.push([
                                 { text: `   ${item.name}`, style: 'tableCell' },
                                 { text: item.barcode, style: 'tableCell', alignment: 'center' },
-                                { text: `${item.price.toFixed(2)} TL`, style: 'tableCell', alignment: 'right', bold: true }
+                                { text: `${item.price.toFixed(2)} TL`, style: 'tableCell', alignment: 'right', bold: true },
+                                { text: item.notes || '', style: 'tableCell', fontSize: 8, color: '#666666' }
                             ]);
                         });
                     }
@@ -617,7 +631,7 @@
                 allContent.push({
                     table: {
                         headerRows: 1,
-                        widths: ['*', 100, 80],
+                        widths: ['*', 85, 65, 80],
                         body: tableBody
                     },
                     layout: {
@@ -703,7 +717,8 @@
                 name: document.getElementById('m_name').value,
                 brand: document.getElementById('m_brand').value,
                 category: document.getElementById('m_category').value,
-                price: parseFloat(document.getElementById('m_price').value)
+                price: parseFloat(document.getElementById('m_price').value),
+                notes: document.getElementById('m_notes').value || ""
             };
             if (products.some(p => p.barcode === newP.barcode)) { 
                 alert("Hata: Bu barkod zaten mevcut!"); 
