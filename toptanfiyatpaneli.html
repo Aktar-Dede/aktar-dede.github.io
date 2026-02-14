@@ -1,0 +1,735 @@
+<!DOCTYPE html>
+<html lang="tr">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Anadolu Flora & Aktar Dede Toptan Fiyat Paneli</title>
+    <script>
+        // Tailwind CDN uyarısını kapat (geliştirme amaçlı)
+        window.process = { env: { NODE_ENV: 'production' } };
+    </script>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/xlsx/0.18.5/xlsx.full.min.js"></script>
+    <!-- pdfmake kütüphanesi - Türkçe karakter desteği ile -->
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/pdfmake/0.2.7/pdfmake.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/pdfmake/0.2.7/vfs_fonts.js"></script>
+    <script src="https://unpkg.com/lucide@latest"></script>
+    <style>
+        @import url('https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800;900&display=swap');
+        body { font-family: 'Inter', sans-serif; }
+        .modal-active { overflow: hidden; }
+        .price-input:focus { border-color: #059669; box-shadow: 0 0 0 2px rgba(5, 150, 105, 0.2); }
+        @keyframes pulse-success {
+            0% { background-color: transparent; }
+            50% { background-color: rgba(16, 185, 129, 0.2); }
+            100% { background-color: transparent; }
+        }
+        .update-flash { animation: pulse-success 1s ease-out; }
+        #jsonFileInput { display: none; }
+    </style>
+</head>
+<body class="bg-slate-50 text-slate-900 min-h-screen">
+
+    <!-- Header -->
+    <header class="bg-emerald-900 text-white shadow-2xl sticky top-0 z-40 border-b border-emerald-950">
+        <div class="container mx-auto px-6 py-4 flex flex-col md:flex-row justify-between items-center gap-4 max-w-none w-full">
+            <div class="flex items-center gap-4">
+                <div class="bg-white p-2 rounded-2xl shadow-inner">
+                    <i data-lucide="leaf" class="text-emerald-800 w-8 h-8"></i>
+                </div>
+                <div>
+                    <h1 class="text-2xl font-black tracking-tight text-white">Anadolu Flora & Aktar Dede</h1>
+                    <p class="text-emerald-300 text-[10px] font-bold uppercase tracking-[0.2em]">Fiyat & Katalog Yönetimi</p>
+                </div>
+            </div>
+            
+            <div class="flex flex-wrap gap-2 w-full md:w-auto">
+                <button onclick="openModal()" class="bg-emerald-600 hover:bg-emerald-500 px-4 py-2 rounded-xl flex items-center gap-2 transition-all font-bold text-sm shadow-lg text-white">
+                    <i data-lucide="plus" class="w-4 h-4"></i> Ürün Ekle
+                </button>
+                <button onclick="document.getElementById('jsonFileInput').click()" class="bg-purple-600 hover:bg-purple-500 px-4 py-2 rounded-xl flex items-center gap-2 transition-all font-bold text-sm shadow-lg text-white">
+                    <i data-lucide="upload" class="w-4 h-4"></i> JSON Yükle
+                </button>
+                <button onclick="exportToJSON()" class="bg-indigo-600 hover:bg-indigo-500 px-4 py-2 rounded-xl flex items-center gap-2 transition-all font-bold text-sm shadow-lg text-white">
+                    <i data-lucide="download" class="w-4 h-4"></i> JSON İndir
+                </button>
+                <button onclick="exportToExcel()" class="bg-blue-600 hover:bg-blue-500 px-4 py-2 rounded-xl flex items-center gap-2 transition-all font-bold text-sm shadow-lg text-white">
+                    <i data-lucide="file-spreadsheet" class="w-4 h-4"></i> Excel
+                </button>
+                <button onclick="exportToPDF()" class="bg-red-600 hover:bg-red-500 px-4 py-2 rounded-xl flex items-center gap-2 transition-all font-bold text-sm shadow-lg text-white">
+                    <i data-lucide="file-text" class="w-4 h-4"></i> PDF Katalog
+                </button>
+                <button onclick="resetData()" class="bg-slate-600 hover:bg-slate-500 px-4 py-2 rounded-xl flex items-center gap-2 transition-all font-bold text-sm shadow-lg text-white">
+                    <i data-lucide="rotate-ccw" class="w-4 h-4"></i> Sıfırla
+                </button>
+            </div>
+        </div>
+    </header>
+
+    <input type="file" id="jsonFileInput" accept=".json" onchange="importFromJSON(event)">
+
+    <main class="container mx-auto px-6 py-8 max-w-none w-full">
+        <!-- Arama Çubuğu -->
+        <div class="mb-8">
+            <div class="flex gap-4 items-center">
+                <div class="relative group flex-1">
+                    <i data-lucide="search" class="absolute left-4 top-1/2 -translate-y-1/2 text-slate-400 group-focus-within:text-emerald-600 transition-colors w-5 h-5"></i>
+                    <input type="text" id="searchInput" oninput="filterProducts()" placeholder="Barkod veya ürün ismine göre hızlı arama..." 
+                        class="w-full pl-12 pr-4 py-4 rounded-2xl border border-slate-200 focus:ring-4 focus:ring-emerald-500/10 focus:border-emerald-600 outline-none transition-all shadow-sm text-lg font-medium">
+                </div>
+                <label class="flex items-center gap-3 bg-white px-6 py-4 rounded-2xl border border-slate-200 shadow-sm cursor-pointer hover:bg-slate-50 transition-all">
+                    <input type="checkbox" id="hideZeroPrice" onchange="filterProducts()" class="w-5 h-5 text-emerald-600 rounded focus:ring-2 focus:ring-emerald-500 cursor-pointer">
+                    <span class="text-sm font-bold text-slate-700 whitespace-nowrap">Fiyatı 0,00 TL olanları gizle</span>
+                </label>
+            </div>
+        </div>
+
+        <!-- Ürün Kartları -->
+        <div id="productTableBody" class="space-y-6">
+            <!-- JS ile doldurulacak -->
+        </div>
+        
+        <div id="noResult" class="hidden py-32 text-center text-slate-400">
+            <div class="bg-slate-100 w-20 h-20 rounded-full flex items-center justify-center mx-auto mb-4">
+                <i data-lucide="package-search" class="w-10 h-10 opacity-30"></i>
+            </div>
+            <h3 class="text-xl font-bold text-slate-700">Ürün Bulunamadı</h3>
+        </div>
+    </main>
+
+    <!-- Modal: Ürün Ekleme -->
+    <div id="productModal" class="hidden fixed inset-0 bg-slate-900/90 backdrop-blur-sm z-50 flex items-center justify-center p-4">
+        <div class="bg-white rounded-[2.5rem] w-full max-w-xl shadow-2xl overflow-hidden scale-95 opacity-0 transition-all duration-300" id="modalContent">
+            <div class="bg-emerald-900 p-8 text-white flex justify-between items-center">
+                <div>
+                    <h2 class="text-2xl font-black">Yeni Ürün Kaydı</h2>
+                </div>
+                <button onclick="closeModal()" class="bg-white/10 hover:bg-white/20 p-2 rounded-full transition-all">
+                    <i data-lucide="x" class="w-6 h-6"></i>
+                </button>
+            </div>
+            <form id="productForm" class="p-8 space-y-5">
+                <div class="grid grid-cols-2 gap-5">
+                    <div class="col-span-2">
+                        <label class="block text-[10px] font-black text-slate-400 uppercase mb-2 ml-1">Barkod Numarası</label>
+                        <input type="text" id="m_barcode" required class="w-full p-4 bg-slate-50 border border-slate-200 rounded-2xl outline-none focus:ring-4 focus:ring-emerald-500/10 focus:border-emerald-600 transition-all font-mono">
+                    </div>
+                    <div class="col-span-2">
+                        <label class="block text-[10px] font-black text-slate-400 uppercase mb-2 ml-1">Ürün Adı ve Gramajı</label>
+                        <input type="text" id="m_name" required class="w-full p-4 bg-slate-50 border border-slate-200 rounded-2xl outline-none focus:ring-4 focus:ring-emerald-500/10 focus:border-emerald-600 transition-all font-bold">
+                    </div>
+                    <div>
+                        <label class="block text-[10px] font-black text-slate-400 uppercase mb-2 ml-1">Marka</label>
+                        <select id="m_brand" class="w-full p-4 bg-slate-50 border border-slate-200 rounded-2xl outline-none cursor-pointer font-bold">
+                            <option value="ANADOLU FLORA">ANADOLU FLORA</option>
+                            <option value="AKTAR DEDE">AKTAR DEDE</option>
+                        </select>
+                    </div>
+                    <div>
+                        <label class="block text-[10px] font-black text-slate-400 uppercase mb-2 ml-1">Kategori</label>
+                        <select id="m_category" class="w-full p-4 bg-slate-50 border border-slate-200 rounded-2xl outline-none cursor-pointer font-bold">
+                            <option value="YAĞ GRUBU">YAĞ GRUBU</option>
+                            <option value="OT GRUBU">OT GRUBU</option>
+                            <option value="MACUN GRUBU">MACUN GRUBU</option>
+                            <option value="DİĞER">DİĞER</option>
+                        </select>
+                    </div>
+                    <div class="col-span-2">
+                        <label class="block text-[10px] font-black text-slate-400 uppercase mb-2 ml-1">Toptan Fiyat (TL)</label>
+                        <input type="number" id="m_price" step="0.01" required class="w-full p-4 bg-slate-50 border border-slate-200 rounded-2xl outline-none font-black text-emerald-800 text-2xl">
+                    </div>
+                </div>
+                <button type="submit" class="w-full bg-emerald-700 text-white py-5 rounded-2xl font-black text-lg hover:bg-emerald-600 transition-all shadow-xl shadow-emerald-900/20 active:scale-95">
+                    LİSTEYE EKLE
+                </button>
+            </form>
+        </div>
+    </div>
+
+    <script>
+        // Ürün Listesi
+        let products = [
+        ];
+
+        // LocalStorage'dan verileri yükle
+        function loadFromLocalStorage() {
+            const saved = localStorage.getItem('floraDedeProducts');
+            if (saved) {
+                try {
+                    products = JSON.parse(saved);
+                    console.log('Veriler localStorage\'dan yüklendi:', products.length, 'ürün');
+                } catch (e) {
+                    console.error('localStorage verileri yüklenirken hata:', e);
+                }
+            }
+        }
+
+        // LocalStorage'a verileri kaydet
+        function saveToLocalStorage() {
+            try {
+                localStorage.setItem('floraDedeProducts', JSON.stringify(products));
+                console.log('Veriler localStorage\'a kaydedildi:', products.length, 'ürün');
+            } catch (e) {
+                console.error('localStorage\'a kaydetme hatası:', e);
+            }
+        }
+
+        // Verileri sıfırla (varsayılan verilere dön)
+        function resetData() {
+            if (confirm('Tüm veriler silinecek ve varsayılan verilere dönülecek. Emin misiniz?')) {
+                localStorage.removeItem('floraDedeProducts');
+                products = [
+                ];
+                saveToLocalStorage();
+                renderProducts();
+                alert('Veriler varsayılana sıfırlandı!');
+            }
+        }
+
+        function renderProducts() {
+            const container = document.getElementById('productTableBody');
+            const searchTerm = document.getElementById('searchInput').value.toLowerCase();
+            const hideZeroPrice = document.getElementById('hideZeroPrice') ? document.getElementById('hideZeroPrice').checked : false;
+            
+            container.innerHTML = '';
+            let hasResults = false;
+            
+            const brands = ["ANADOLU FLORA", "AKTAR DEDE"];
+            
+            brands.forEach(brand => {
+                const brandProducts = products.filter(p => p.brand === brand);
+                if (brandProducts.length === 0) return;
+                
+                // Marka kartı
+                const brandCard = document.createElement('div');
+                brandCard.className = 'bg-white rounded-3xl shadow-xl border border-slate-200 overflow-hidden';
+                
+                // Marka başlığı
+                const brandHeader = document.createElement('div');
+                brandHeader.className = brand === 'AKTAR DEDE' ? 
+                    'bg-gradient-to-r from-amber-600 to-amber-700 p-6' : 
+                    'bg-gradient-to-r from-blue-600 to-blue-700 p-6';
+                
+                // Filtrelenmiş ürün sayısını hesapla
+                const visibleCount = brandProducts.filter(p => {
+                    const matchesSearch = !searchTerm || p.name.toLowerCase().includes(searchTerm) || p.barcode.includes(searchTerm);
+                    const matchesPrice = !hideZeroPrice || p.price > 0;
+                    return matchesSearch && matchesPrice;
+                }).length;
+                
+                brandHeader.innerHTML = `
+                    <h2 class="text-2xl font-black text-white tracking-tight">${brand}</h2>
+                    <p class="text-white/80 text-sm font-medium mt-1">${visibleCount} Ürün</p>
+                `;
+                brandCard.appendChild(brandHeader);
+                
+                // Kategorilere göre grupla
+                const categories = [...new Set(brandProducts.map(p => p.category))];
+                
+                let brandHasResults = false;
+                
+                categories.forEach(cat => {
+                    const catItems = brandProducts.filter(p => p.category === cat);
+                    
+                    // Arama ve fiyat filtresi uygula
+                    const filteredCatItems = catItems.filter(p => {
+                        const matchesSearch = !searchTerm || p.name.toLowerCase().includes(searchTerm) || p.barcode.includes(searchTerm);
+                        const matchesPrice = !hideZeroPrice || p.price > 0;
+                        return matchesSearch && matchesPrice;
+                    });
+                    
+                    if (filteredCatItems.length === 0) return;
+                    hasResults = true;
+                    brandHasResults = true;
+                    
+                    // Kategori bölümü
+                    const categorySection = document.createElement('div');
+                    categorySection.className = 'border-b border-slate-200 last:border-b-0';
+                    
+                    // Kategori başlığı
+                    const categoryHeader = document.createElement('div');
+                    categoryHeader.className = 'bg-slate-50 px-8 py-4 border-b border-slate-200';
+                    categoryHeader.innerHTML = `
+                        <h3 class="text-sm font-black text-slate-700 uppercase tracking-wider flex items-center gap-2">
+                            <i data-lucide="folder" class="w-4 h-4 text-emerald-700"></i>
+                            ${cat}
+                        </h3>
+                    `;
+                    categorySection.appendChild(categoryHeader);
+                    
+                    // Yağ grubu için alt gruplar
+                    if (cat.includes("YAĞ")) {
+                        ["250 ML GRUBU", "50 ML GRUBU", "20 ML GRUBU", "DİĞER BOYUTLAR"].forEach(sub => {
+                            const subItems = filteredCatItems.filter(p => getOilSubGroup(p.name) === sub);
+                            if (subItems.length === 0) return;
+                            
+                            // Alt grup başlığı
+                            const subGroupHeader = document.createElement('div');
+                            subGroupHeader.className = 'bg-slate-100/50 px-8 py-3 border-b border-slate-100';
+                            subGroupHeader.innerHTML = `
+                                <h4 class="text-xs font-bold text-slate-500 italic flex items-center gap-2">
+                                    <i data-lucide="chevron-right" class="w-3 h-3"></i>
+                                    ${sub}
+                                </h4>
+                            `;
+                            categorySection.appendChild(subGroupHeader);
+                            
+                            // Alt grup ürünleri
+                            subItems.forEach(item => {
+                                const row = createProductRow(item);
+                                categorySection.appendChild(row);
+                            });
+                        });
+                    } else {
+                        // Normal kategori ürünleri
+                        filteredCatItems.forEach(item => {
+                            const row = createProductRow(item);
+                            categorySection.appendChild(row);
+                        });
+                    }
+                    
+                    brandCard.appendChild(categorySection);
+                });
+                
+                if (brandHasResults) {
+                    container.appendChild(brandCard);
+                }
+            });
+            
+            document.getElementById('noResult').classList.toggle('hidden', hasResults);
+            
+            // Lucide ikonlarını güvenli şekilde başlat
+            if (typeof lucide !== 'undefined') {
+                lucide.createIcons();
+            }
+        }
+        
+        function createProductRow(item) {
+            const row = document.createElement('div');
+            row.className = 'px-8 py-5 hover:bg-slate-50/50 transition-colors group flex items-center gap-6 border-b border-slate-100 last:border-b-0';
+            row.id = `row-${item.barcode}`;
+            row.innerHTML = `
+                <div class="w-32 flex-shrink-0">
+                    <div class="text-xs font-mono text-slate-400 font-bold">${item.barcode}</div>
+                </div>
+                <div class="flex-1 min-w-0">
+                    <div class="font-bold text-slate-800 text-lg">${item.name}</div>
+                </div>
+                <div class="flex items-center gap-4 flex-shrink-0">
+                    <div class="flex items-center gap-2">
+                        <input type="number" step="0.01" 
+                            value="${item.price.toFixed(2)}" 
+                            onchange="updatePrice('${item.barcode}', this.value)"
+                            onblur="formatPrice(this, '${item.barcode}')"
+                            class="price-input w-32 p-3 font-black text-emerald-800 bg-emerald-50/50 rounded-xl border border-emerald-100 outline-none text-xl transition-all focus:bg-white focus:ring-2 focus:ring-emerald-500/20"
+                        >
+                        <span class="text-sm font-black text-slate-300">TL</span>
+                    </div>
+                    <button onclick="deleteProduct('${item.barcode}')" class="text-slate-200 hover:text-red-500 p-2 rounded-xl hover:bg-red-50 transition-all opacity-0 group-hover:opacity-100">
+                        <i data-lucide="trash-2" class="w-5 h-5"></i>
+                    </button>
+                </div>
+            `;
+            return row;
+        }
+
+        function updatePrice(barcode, newPrice) {
+            const index = products.findIndex(p => p.barcode === barcode);
+            if (index !== -1) {
+                products[index].price = parseFloat(newPrice) || 0;
+                saveToLocalStorage(); // LocalStorage'a kaydet
+                const row = document.getElementById(`row-${barcode}`);
+                row.classList.add('update-flash');
+                setTimeout(() => row.classList.remove('update-flash'), 1000);
+            }
+        }
+
+        function formatPrice(input, barcode) {
+            let value = input.value;
+            
+            // Boş ise 0.00 yap
+            if (value === '' || value === null) {
+                value = '0.00';
+            } else {
+                // Sayıya çevir
+                let num = parseFloat(value);
+                
+                // Geçersiz sayı ise 0 yap
+                if (isNaN(num)) {
+                    num = 0;
+                }
+                
+                // İki ondalık basamağa formatla
+                value = num.toFixed(2);
+            }
+            
+            input.value = value;
+            updatePrice(barcode, value);
+        }
+
+        function filterProducts() { 
+            renderProducts(); 
+        }
+
+        function deleteProduct(barcode) {
+            if(confirm('Ürün silinecek. Emin misiniz?')) {
+                products = products.filter(p => p.barcode !== barcode);
+                saveToLocalStorage(); // LocalStorage'a kaydet
+                renderProducts();
+            }
+        }
+
+        function getOilSubGroup(name) {
+            const n = name.toUpperCase();
+            if (n.includes("250 ML") || n.includes("250ML")) return "250 ML GRUBU";
+            if (n.includes("50 ML") || n.includes("50ML")) return "50 ML GRUBU";
+            if (n.includes("20 ML") || n.includes("20ML")) return "20 ML GRUBU";
+            return "DİĞER BOYUTLAR";
+        }
+
+        // JSON İçe/Dışa Aktarma
+        function exportToJSON() {
+            const dataStr = JSON.stringify(products, null, 2);
+            const dataBlob = new Blob([dataStr], { type: 'application/json' });
+            const url = URL.createObjectURL(dataBlob);
+            const link = document.createElement('a');
+            link.href = url;
+            link.download = `urunler_${new Date().toISOString().split('T')[0]}.json`;
+            link.click();
+            URL.revokeObjectURL(url);
+        }
+
+        function importFromJSON(event) {
+            const file = event.target.files[0];
+            if (!file) return;
+
+            const reader = new FileReader();
+            reader.onload = function(e) {
+                try {
+                    const importedProducts = JSON.parse(e.target.result);
+                    if (!Array.isArray(importedProducts)) {
+                        alert('Hata: Geçersiz JSON formatı!');
+                        return;
+                    }
+                    
+                    const isValid = importedProducts.every(p => 
+                        p.barcode && p.name && p.brand && p.category && typeof p.price === 'number'
+                    );
+                    
+                    if (!isValid) {
+                        alert('Hata: JSON dosyası gerekli alanları içermiyor!');
+                        return;
+                    }
+
+                    if (confirm(`${importedProducts.length} ürün içe aktarılacak. Mevcut veriler silinecek. Onaylıyor musunuz?`)) {
+                        products = importedProducts;
+                        saveToLocalStorage(); // LocalStorage'a kaydet
+                        renderProducts();
+                        alert('Ürünler başarıyla yüklendi!');
+                    }
+                } catch (error) {
+                    alert('Hata: JSON dosyası okunamadı! ' + error.message);
+                }
+            };
+            reader.readAsText(file);
+            event.target.value = '';
+        }
+
+        function exportToExcel() {
+            const wb = XLSX.utils.book_new();
+            const brands = ["ANADOLU FLORA", "AKTAR DEDE"];
+            const hideZeroPrice = document.getElementById('hideZeroPrice') ? document.getElementById('hideZeroPrice').checked : false;
+            
+            brands.forEach(brand => {
+                let brandProducts = products.filter(p => p.brand === brand);
+                
+                // Fiyatı 0 olanları filtrele (eğer checkbox işaretliyse)
+                if (hideZeroPrice) {
+                    brandProducts = brandProducts.filter(p => p.price > 0);
+                }
+                
+                if (brandProducts.length === 0) return;
+                
+                const ws_data = [];
+                
+                ws_data.push([`${brand} TOPTAN FİYAT LİSTESİ`]);
+                ws_data.push([`Tarih: ${new Date().toLocaleDateString('tr-TR')}`]);
+                if (hideZeroPrice) {
+                    ws_data.push([`Not: Fiyatı 0,00 TL olan ürünler dahil edilmemiştir.`]);
+                }
+                ws_data.push([]);
+                ws_data.push(['ÜRÜN ADI', 'BARKOD', 'FİYAT (TL)']);
+                
+                const categories = [...new Set(brandProducts.map(p => p.category))];
+                
+                categories.forEach(cat => {
+                    ws_data.push([]);
+                    ws_data.push([`${cat}`]);
+                    
+                    const catItems = brandProducts.filter(p => p.category === cat);
+                    
+                    if (cat.includes("YAĞ")) {
+                        ["250 ML GRUBU", "50 ML GRUBU", "20 ML GRUBU", "DİĞER BOYUTLAR"].forEach(sub => {
+                            const subItems = catItems.filter(p => getOilSubGroup(p.name) === sub);
+                            if (subItems.length > 0) {
+                                ws_data.push([`  ${sub}`]);
+                                subItems.forEach(item => {
+                                    ws_data.push([`    ${item.name}`, item.barcode, item.price.toFixed(2)]);
+                                });
+                            }
+                        });
+                    } else {
+                        catItems.forEach(item => {
+                            ws_data.push([`  ${item.name}`, item.barcode, item.price.toFixed(2)]);
+                        });
+                    }
+                });
+                
+                const ws = XLSX.utils.aoa_to_sheet(ws_data);
+                ws['!cols'] = [{ wch: 50 }, { wch: 20 }, { wch: 15 }];
+                
+                if (ws['A1']) {
+                    ws['A1'].s = {
+                        font: { bold: true, sz: 14, color: { rgb: "FFFFFF" } },
+                        fill: { fgColor: { rgb: "059669" } },
+                        alignment: { horizontal: "center" }
+                    };
+                }
+                
+                if (ws['A2']) {
+                    ws['A2'].s = {
+                        font: { italic: true, sz: 10 },
+                        fill: { fgColor: { rgb: "F1F5F9" } }
+                    };
+                }
+                
+                ['A4', 'B4', 'C4'].forEach(cell => {
+                    if (ws[cell]) {
+                        ws[cell].s = {
+                            font: { bold: true, sz: 11 },
+                            fill: { fgColor: { rgb: "E2E8F0" } },
+                            alignment: { horizontal: "center" }
+                        };
+                    }
+                });
+                
+                XLSX.utils.book_append_sheet(wb, ws, brand.substring(0, 31));
+            });
+            
+            XLSX.writeFile(wb, `Fiyat_Listesi_${new Date().toISOString().split('T')[0]}.xlsx`);
+        }
+
+        function exportToPDF() {
+            const brands = ["ANADOLU FLORA", "AKTAR DEDE"];
+            const allContent = [];
+            const hideZeroPrice = document.getElementById('hideZeroPrice') ? document.getElementById('hideZeroPrice').checked : false;
+            
+            brands.forEach((brand, bIndex) => {
+                if (bIndex > 0) {
+                    allContent.push({ text: '', pageBreak: 'before' });
+                }
+                
+                allContent.push({
+                    text: `${brand} TOPTAN FİYAT LİSTESİ`,
+                    style: 'header',
+                    alignment: 'center',
+                    margin: [0, 0, 0, 10]
+                });
+                
+                allContent.push({
+                    text: `Tarih: ${new Date().toLocaleDateString('tr-TR')}`,
+                    style: 'subheader',
+                    margin: [0, 0, 0, 5]
+                });
+                
+                if (hideZeroPrice) {
+                    allContent.push({
+                        text: `Not: Fiyatı 0,00 TL olan ürünler dahil edilmemiştir.`,
+                        style: 'note',
+                        margin: [0, 0, 0, 20],
+                        italics: true,
+                        color: '#666666',
+                        fontSize: 9
+                    });
+                } else {
+                    allContent.push({
+                        text: '',
+                        margin: [0, 0, 0, 15]
+                    });
+                }
+                
+                let brandProducts = products.filter(p => p.brand === brand);
+                
+                // Fiyatı 0 olanları filtrele (eğer checkbox işaretliyse)
+                if (hideZeroPrice) {
+                    brandProducts = brandProducts.filter(p => p.price > 0);
+                }
+                
+                const categories = [...new Set(brandProducts.map(p => p.category))];
+                
+                const tableBody = [];
+                tableBody.push([
+                    { text: 'Ürün Adı', style: 'tableHeader', fillColor: '#064e3b', color: 'white' },
+                    { text: 'Barkod', style: 'tableHeader', fillColor: '#064e3b', color: 'white', alignment: 'center' },
+                    { text: 'Birim Fiyat', style: 'tableHeader', fillColor: '#064e3b', color: 'white', alignment: 'right' }
+                ]);
+                
+                categories.forEach(cat => {
+                    const catItems = brandProducts.filter(p => p.category === cat);
+                    if (catItems.length === 0) return;
+                    
+                    tableBody.push([
+                        { text: cat, colSpan: 3, style: 'categoryHeader', fillColor: '#e5e7eb' },
+                        {},
+                        {}
+                    ]);
+                    
+                    if (cat.includes("YAĞ")) {
+                        ["250 ML GRUBU", "50 ML GRUBU", "20 ML GRUBU", "DİĞER BOYUTLAR"].forEach(sub => {
+                            const subItems = catItems.filter(p => getOilSubGroup(p.name) === sub);
+                            if (subItems.length > 0) {
+                                tableBody.push([
+                                    { text: `   ${sub}`, colSpan: 3, style: 'subGroupHeader', italics: true, color: '#6b7280' },
+                                    {},
+                                    {}
+                                ]);
+                                
+                                subItems.forEach(item => {
+                                    tableBody.push([
+                                        { text: `      ${item.name}`, style: 'tableCell' },
+                                        { text: item.barcode, style: 'tableCell', alignment: 'center' },
+                                        { text: `${item.price.toFixed(2)} TL`, style: 'tableCell', alignment: 'right', bold: true }
+                                    ]);
+                                });
+                            }
+                        });
+                    } else {
+                        catItems.forEach(item => {
+                            tableBody.push([
+                                { text: `   ${item.name}`, style: 'tableCell' },
+                                { text: item.barcode, style: 'tableCell', alignment: 'center' },
+                                { text: `${item.price.toFixed(2)} TL`, style: 'tableCell', alignment: 'right', bold: true }
+                            ]);
+                        });
+                    }
+                });
+                
+                allContent.push({
+                    table: {
+                        headerRows: 1,
+                        widths: ['*', 100, 80],
+                        body: tableBody
+                    },
+                    layout: {
+                        hLineWidth: function (i, node) { return 0.5; },
+                        vLineWidth: function (i, node) { return 0.5; },
+                        hLineColor: function (i, node) { return '#e2e8f0'; },
+                        vLineColor: function (i, node) { return '#e2e8f0'; },
+                        fillColor: function (rowIndex, node, columnIndex) {
+                            return (rowIndex % 2 === 0 && rowIndex !== 0) ? '#f9fafb' : null;
+                        }
+                    }
+                });
+                
+                allContent.push({
+                    text: `Sayfa ${bIndex + 1} / ${brands.length}`,
+                    alignment: 'center',
+                    fontSize: 8,
+                    color: '#999999',
+                    margin: [0, 20, 0, 0]
+                });
+            });
+            
+            const docDefinition = {
+                content: allContent,
+                styles: {
+                    header: {
+                        fontSize: 18,
+                        bold: true,
+                        color: '#059669'
+                    },
+                    subheader: {
+                        fontSize: 10,
+                        color: '#666666'
+                    },
+                    note: {
+                        fontSize: 9,
+                        color: '#666666',
+                        italics: true
+                    },
+                    tableHeader: {
+                        bold: true,
+                        fontSize: 10
+                    },
+                    categoryHeader: {
+                        fontSize: 11,
+                        bold: true,
+                        color: '#1f2937'
+                    },
+                    subGroupHeader: {
+                        fontSize: 9
+                    },
+                    tableCell: {
+                        fontSize: 9
+                    }
+                },
+                defaultStyle: {
+                    font: 'Roboto'
+                },
+                pageSize: 'A4',
+                pageMargins: [40, 60, 40, 60]
+            };
+            
+            pdfMake.createPdf(docDefinition).download(`Fiyat_Katalog_${new Date().toISOString().split('T')[0]}.pdf`);
+        }
+
+        // Modal
+        function openModal() {
+            document.getElementById('productModal').classList.remove('hidden');
+            setTimeout(() => { document.getElementById('modalContent').classList.remove('scale-95', 'opacity-0'); }, 10);
+            document.body.classList.add('modal-active');
+        }
+        
+        function closeModal() {
+            document.getElementById('modalContent').classList.add('scale-95', 'opacity-0');
+            setTimeout(() => { document.getElementById('productModal').classList.add('hidden'); }, 300);
+            document.body.classList.remove('modal-active');
+        }
+
+        document.getElementById('productForm').onsubmit = function(e) {
+            e.preventDefault();
+            const newP = {
+                barcode: document.getElementById('m_barcode').value,
+                name: document.getElementById('m_name').value,
+                brand: document.getElementById('m_brand').value,
+                category: document.getElementById('m_category').value,
+                price: parseFloat(document.getElementById('m_price').value)
+            };
+            if (products.some(p => p.barcode === newP.barcode)) { 
+                alert("Hata: Bu barkod zaten mevcut!"); 
+                return; 
+            }
+            products.unshift(newP);
+            saveToLocalStorage(); // LocalStorage'a kaydet
+            this.reset();
+            closeModal();
+            renderProducts();
+        };
+
+        // Lucide ikonlarını güvenli şekilde başlat
+        function initIcons() {
+            if (typeof lucide !== 'undefined') {
+                lucide.createIcons();
+            } else {
+                setTimeout(initIcons, 100);
+            }
+        }
+
+        window.onload = () => {
+            loadFromLocalStorage(); // LocalStorage'dan verileri yükle
+            renderProducts(); 
+            initIcons();
+        };
+    </script>
+</body>
+</html>
